@@ -1,25 +1,30 @@
-import { getDatabase, onValue, push, ref } from "firebase/database";
+import { collection, onSnapshot } from "firebase/firestore";
+import { db } from "./config"; // Firestore instance from your config
 
-export function writeData(key, data) {
-  const db = getDatabase();
-  const reference = ref(db, `${key}`);
-  push(reference, data);
-}
+// export function writeData(key, data) {
+//   const db = getDatabase();
+//   const reference = ref(db, `${key}`);
+//   push(reference, data);
+// }
 
-export function setupDataListener(key, updateFunc) {
-  console.log("setDataListener called");
-  const db = getDatabase();
-  const reference = ref(db, `${key}`);
-  onValue(reference, (snapshot) => {
-    if (snapshot.val()) {
-      const fbObject = snapshot.val();
-      const newArr = [];
-      Object.keys(fbObject).map((key, index) => {
-        newArr.push({ ...fbObject[key], id: key });
-      });
+export function setupDataListener(
+  collectionKey: string,
+  updateFunc: (data: any[]) => void
+) {
+  console.log("setupDataListener called");
+  const collectionRef = collection(db, collectionKey);
+
+  const unsubscribe = onSnapshot(collectionRef, (snapshot) => {
+    if (!snapshot.empty) {
+      const newArr = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
       updateFunc(newArr);
     } else {
       updateFunc([]);
     }
   });
+
+  return unsubscribe;
 }

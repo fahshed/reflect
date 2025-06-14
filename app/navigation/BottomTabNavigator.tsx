@@ -16,6 +16,7 @@ export default function BottomTabNavigator() {
       <Tab.Screen name="Home" component={HomeScreen} />
       <Tab.Screen name="Add Entry" component={AddEntryScreen} />
       <Tab.Screen name="Profile" component={ProfileScreen} />
+      {/* <Tab.Screen name="Edit Entry" component={EditEntryScreen} /> */}
     </Tab.Navigator>
   );
 }
