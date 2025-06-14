@@ -10,8 +10,6 @@ export default function BottomTabNavigator() {
   return (
     <Tab.Navigator
       screenOptions={{
-        // headerStyle: { backgroundColor: "#0047AB" },
-        // headerTintColor: "#fff",
         headerShown: false,
       }}
     >

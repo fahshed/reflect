@@ -1,10 +1,4 @@
-import { initializeApp } from "firebase/app";
 import { getDatabase, onValue, push, ref } from "firebase/database";
-import { firebaseConfig } from "./credentials";
-
-export function initDB() {
-  initializeApp(firebaseConfig);
-}
 
 export function writeData(key, data) {
   const db = getDatabase();
