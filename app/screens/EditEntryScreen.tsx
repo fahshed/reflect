@@ -1,7 +1,14 @@
 import JournalForm from "@/components/JournalForm";
 import { updateJournalEntry } from "@/firebase/journal";
 import React, { useState } from "react";
-import { Alert, Button, StyleSheet, Text, View } from "react-native";
+import {
+  Alert,
+  Button,
+  Keyboard,
+  StyleSheet,
+  Text,
+  TouchableWithoutFeedback,
+} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function EditEntryScreen({ route, navigation }: any) {
@@ -33,16 +40,18 @@ export default function EditEntryScreen({ route, navigation }: any) {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <Text style={styles.title}>Update Journal Entry</Text>
-      <JournalForm
-        post={post}
-        setPost={setPost}
-        selectedTags={selectedTags}
-        toggleTag={toggleTag}
-      />
-      <Button title="Update" onPress={handleSubmit} />
-    </SafeAreaView>
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <SafeAreaView style={styles.container}>
+        <Text style={styles.title}>Update Journal Entry</Text>
+        <JournalForm
+          post={post}
+          setPost={setPost}
+          selectedTags={selectedTags}
+          toggleTag={toggleTag}
+        />
+        <Button title="Update" onPress={handleSubmit} />
+      </SafeAreaView>
+    </TouchableWithoutFeedback>
   );
 }
 

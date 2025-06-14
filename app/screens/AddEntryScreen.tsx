@@ -2,7 +2,14 @@ import JournalForm from "@/components/JournalForm";
 import { useAuth } from "@/context/authContext";
 import { createJournalEntry } from "@/firebase/journal";
 import React, { useState } from "react";
-import { Alert, Button, StyleSheet, Text } from "react-native";
+import {
+  Alert,
+  Button,
+  Keyboard,
+  StyleSheet,
+  Text,
+  TouchableWithoutFeedback,
+} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function CreateEntryScreen({ navigation }: any) {
@@ -35,16 +42,18 @@ export default function CreateEntryScreen({ navigation }: any) {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <Text style={styles.title}>Add Journal Entry</Text>
-      <JournalForm
-        post={post}
-        setPost={setPost}
-        selectedTags={selectedTags}
-        toggleTag={toggleTag}
-      />
-      <Button title="Submit" onPress={handleSubmit} />
-    </SafeAreaView>
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <SafeAreaView style={styles.container}>
+        <Text style={styles.title}>Add Journal Entry</Text>
+        <JournalForm
+          post={post}
+          setPost={setPost}
+          selectedTags={selectedTags}
+          toggleTag={toggleTag}
+        />
+        <Button title="Submit" onPress={handleSubmit} />
+      </SafeAreaView>
+    </TouchableWithoutFeedback>
   );
 }
 
