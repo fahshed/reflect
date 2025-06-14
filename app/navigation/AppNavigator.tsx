@@ -10,6 +10,8 @@ const Stack = createStackNavigator();
 export default function AppNavigator() {
   const { user } = useAuth();
 
+  console.log("AppNavigator user:", user);
+
   return user ? (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen name="Main" component={BottomTabNavigator} />

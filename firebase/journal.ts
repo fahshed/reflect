@@ -4,17 +4,24 @@ import {
   deleteDoc,
   doc,
   getDocs,
+  query,
   updateDoc,
+  where,
 } from "firebase/firestore";
 import { db } from "./config";
 
 const journalCollection = collection(db, "journalEntries");
 
-export async function createJournalEntry(content: string, tags: string[]) {
+export async function createJournalEntry(
+  content: string,
+  tags: string[],
+  userId: string
+) {
   try {
     const newEntry = {
       content,
       tags,
+      userId,
       createdAt: new Date().toISOString(),
     };
     const docRef = await addDoc(journalCollection, newEntry);
@@ -25,13 +32,16 @@ export async function createJournalEntry(content: string, tags: string[]) {
   }
 }
 
-export async function getJournalEntries() {
+export async function getJournalEntries(userId: string) {
   try {
-    const querySnapshot = await getDocs(journalCollection);
+    const userQuery = query(journalCollection, where("userId", "==", userId));
+    const querySnapshot = await getDocs(userQuery);
+
     const entries = querySnapshot.docs.map((doc) => ({
       id: doc.id,
       ...doc.data(),
     }));
+
     return entries;
   } catch (error) {
     console.error("Error fetching journal entries:", error);

@@ -1,4 +1,5 @@
 import JournalForm from "@/components/JournalForm";
+import { useAuth } from "@/context/authContext";
 import { createJournalEntry } from "@/firebase/journal";
 import React, { useState } from "react";
 import { Alert, Button, StyleSheet, Text } from "react-native";
@@ -7,6 +8,8 @@ import { SafeAreaView } from "react-native-safe-area-context";
 export default function CreateEntryScreen({ navigation }: any) {
   const [post, setPost] = useState("");
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
+
+  const { user } = useAuth();
 
   const toggleTag = (tag: string) => {
     if (selectedTags.includes(tag)) {
@@ -23,7 +26,7 @@ export default function CreateEntryScreen({ navigation }: any) {
     }
 
     try {
-      const newEntry = await createJournalEntry(post, selectedTags);
+      const newEntry = await createJournalEntry(post, selectedTags, user.uid);
       Alert.alert("Success", `Journal entry created with ID: ${newEntry.id}`);
       navigation.goBack();
     } catch (error) {

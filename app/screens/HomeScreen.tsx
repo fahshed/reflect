@@ -1,3 +1,4 @@
+import { useAuth } from "@/context/authContext";
 import { setupDataListener } from "@/firebase/database";
 import { deleteJournalEntry } from "@/firebase/journal";
 import React, { useEffect, useState } from "react";
@@ -7,8 +8,14 @@ import { SafeAreaView } from "react-native-safe-area-context";
 export default function HomeScreen({ navigation }: any) {
   const [entries, setEntries] = useState<any[]>([]);
 
+  const { user } = useAuth();
+
   useEffect(() => {
-    const unsubscribe = setupDataListener("journalEntries", setEntries);
+    const unsubscribe = setupDataListener(
+      "journalEntries",
+      user.uid,
+      setEntries
+    );
 
     return () => unsubscribe();
   }, []);
