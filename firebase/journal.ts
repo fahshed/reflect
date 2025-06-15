@@ -9,6 +9,8 @@ import {
   updateDoc,
   where,
 } from "firebase/firestore";
+import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
+import uuid from "react-native-uuid";
 import { db } from "./config";
 
 const journalCollection = collection(db, "journalEntries");
@@ -16,13 +18,15 @@ const journalCollection = collection(db, "journalEntries");
 export async function createJournalEntry(
   content: string,
   tags: string[],
-  userId: string
+  userId: string,
+  imageUrl: string | null = null
 ) {
   try {
     const newEntry = {
       content,
       tags,
       userId,
+      imageUrl,
       createdAt: new Date().toISOString(),
     };
     const docRef = await addDoc(journalCollection, newEntry);
@@ -57,13 +61,15 @@ export async function getJournalEntries(userId: string) {
 export async function updateJournalEntry(
   id: string,
   updatedContent: string,
-  updatedTags: string[]
+  updatedTags: string[],
+  imageUrl: string | null = null
 ) {
   try {
     const entryDoc = doc(db, "journalEntries", id);
     await updateDoc(entryDoc, {
       content: updatedContent,
       tags: updatedTags,
+      imageUrl,
       updatedAt: new Date().toISOString(),
     });
   } catch (error) {
@@ -81,3 +87,13 @@ export async function deleteJournalEntry(id: string) {
     throw error;
   }
 }
+
+export const uploadImageAsync = async (uri: string) => {
+  const blob = await (await fetch(uri)).blob();
+  const imageId = uuid.v4();
+  const storageRef = ref(getStorage(), `journalImages/${imageId}`);
+
+  await uploadBytes(storageRef, blob);
+  const downloadUrl = await getDownloadURL(storageRef);
+  return downloadUrl;
+};

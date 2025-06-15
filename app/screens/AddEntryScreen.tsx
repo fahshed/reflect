@@ -1,6 +1,6 @@
 import JournalForm from "@/components/JournalForm";
 import { useAuth } from "@/context/authContext";
-import { createJournalEntry } from "@/firebase/journal";
+import { createJournalEntry, uploadImageAsync } from "@/firebase/journal";
 import React, { useState } from "react";
 import {
   Alert,
@@ -15,6 +15,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 export default function CreateEntryScreen({ navigation }: any) {
   const [post, setPost] = useState("");
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
+  const [imageUri, setImageUri] = useState<string | null>(null);
 
   const { user } = useAuth();
 
@@ -33,10 +34,23 @@ export default function CreateEntryScreen({ navigation }: any) {
     }
 
     try {
-      const newEntry = await createJournalEntry(post, selectedTags, user.uid);
+      let imageUrl: string | null = null;
+
+      if (imageUri) {
+        imageUrl = await uploadImageAsync(imageUri);
+      }
+
+      const newEntry = await createJournalEntry(
+        post,
+        selectedTags,
+        user.uid,
+        imageUrl
+      );
+
       Alert.alert("Success", `Journal entry created with ID: ${newEntry.id}`);
       navigation.goBack();
     } catch (error) {
+      console.error("Error saving journal entry:", error);
       Alert.alert("Error", "Failed to create journal entry.");
     }
   };
@@ -50,6 +64,8 @@ export default function CreateEntryScreen({ navigation }: any) {
           setPost={setPost}
           selectedTags={selectedTags}
           toggleTag={toggleTag}
+          imageUri={imageUri}
+          setImageUri={setImageUri}
         />
         <Button title="Submit" onPress={handleSubmit} />
       </SafeAreaView>

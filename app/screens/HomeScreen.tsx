@@ -8,6 +8,7 @@ import {
   Alert,
   Button,
   FlatList,
+  Image,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -127,6 +128,14 @@ export default function HomeScreen({ navigation }: any) {
           <View style={styles.entry}>
             <Text style={styles.content}>{item.content}</Text>
             <Text style={styles.tags}>Tags: {item.tags.join(", ")}</Text>
+            {item.imageUrl && (
+              <View style={{ marginBottom: 8 }}>
+                <Image
+                  source={{ uri: item.imageUrl }}
+                  style={{ width: 100, height: 100, borderRadius: 8 }}
+                />
+              </View>
+            )}
             <View style={styles.buttonContainer}>
               <Button
                 title="Edit"

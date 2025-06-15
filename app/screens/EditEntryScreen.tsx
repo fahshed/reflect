@@ -1,5 +1,5 @@
 import JournalForm from "@/components/JournalForm";
-import { updateJournalEntry } from "@/firebase/journal";
+import { updateJournalEntry, uploadImageAsync } from "@/firebase/journal";
 import React, { useState } from "react";
 import {
   Alert,
@@ -15,6 +15,9 @@ export default function EditEntryScreen({ route, navigation }: any) {
   const { entry } = route.params;
   const [post, setPost] = useState(entry.content);
   const [selectedTags, setSelectedTags] = useState<string[]>(entry.tags);
+  const [imageUri, setImageUri] = useState<string | null>(
+    entry.imageUrl || null
+  );
 
   const toggleTag = (tag: string) => {
     if (selectedTags.includes(tag)) {
@@ -31,7 +34,12 @@ export default function EditEntryScreen({ route, navigation }: any) {
     }
 
     try {
-      await updateJournalEntry(entry.id, post, selectedTags);
+      let imageUrl: string | null = null;
+
+      if (imageUri) {
+        imageUrl = await uploadImageAsync(imageUri);
+      }
+      await updateJournalEntry(entry.id, post, selectedTags, imageUrl);
       Alert.alert("Success", "Journal entry updated successfully!");
       navigation.goBack();
     } catch (error) {
@@ -48,6 +56,8 @@ export default function EditEntryScreen({ route, navigation }: any) {
           setPost={setPost}
           selectedTags={selectedTags}
           toggleTag={toggleTag}
+          imageUri={imageUri}
+          setImageUri={setImageUri}
         />
         <Button title="Update" onPress={handleSubmit} />
       </SafeAreaView>

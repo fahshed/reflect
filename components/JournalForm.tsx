@@ -1,6 +1,9 @@
 import { areasOfLife, reflectionTypes } from "@/utils/tags";
+import * as ImagePicker from "expo-image-picker";
 import React from "react";
 import {
+  Alert,
+  Image,
   StyleSheet,
   Text,
   TextInput,
@@ -13,7 +16,33 @@ export default function JournalForm({
   setPost,
   selectedTags,
   toggleTag,
+  imageUri,
+  setImageUri,
 }: any) {
+  const pickImage = async () => {
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      quality: 0.8,
+    });
+
+    if (!result.canceled) {
+      setImageUri(result.assets[0].uri);
+    }
+  };
+
+  const takePhoto = async () => {
+    const permission = await ImagePicker.requestCameraPermissionsAsync();
+    if (!permission.granted) {
+      Alert.alert("Camera permission denied");
+      return;
+    }
+
+    const result = await ImagePicker.launchCameraAsync({ quality: 0.8 });
+    if (!result.canceled) {
+      setImageUri(result.assets[0].uri);
+    }
+  };
+
   return (
     <View>
       <TextInput
@@ -23,6 +52,22 @@ export default function JournalForm({
         onChangeText={setPost}
         multiline
       />
+
+      {imageUri && (
+        <View style={styles.imagePreviewContainer}>
+          <Text style={styles.subtitle}>Selected Image:</Text>
+          <Image source={{ uri: imageUri }} style={styles.imagePreview} />
+        </View>
+      )}
+
+      <View style={styles.buttonRow}>
+        <TouchableOpacity style={styles.imageButton} onPress={pickImage}>
+          <Text style={styles.imageButtonText}>Pick from Gallery</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.imageButton} onPress={takePhoto}>
+          <Text style={styles.imageButtonText}>Take Photo</Text>
+        </TouchableOpacity>
+      </View>
 
       <View style={styles.tagContainer}>
         {reflectionTypes.map((item) => (
@@ -46,7 +91,9 @@ export default function JournalForm({
           </TouchableOpacity>
         ))}
       </View>
+
       <View style={styles.divider} />
+
       <View style={styles.tagContainer}>
         {areasOfLife.map((item) => (
           <TouchableOpacity
@@ -84,6 +131,30 @@ const styles = StyleSheet.create({
     textAlignVertical: "top",
     minHeight: 100,
   },
+  imagePreviewContainer: {
+    marginBottom: 12,
+  },
+  imagePreview: {
+    width: "100%",
+    height: 200,
+    borderRadius: 8,
+    marginBottom: 8,
+  },
+  buttonRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginBottom: 16,
+  },
+  imageButton: {
+    backgroundColor: "#444",
+    paddingVertical: 10,
+    paddingHorizontal: 15,
+    borderRadius: 8,
+  },
+  imageButtonText: {
+    color: "#fff",
+    fontWeight: "bold",
+  },
   subtitle: {
     fontSize: 18,
     fontWeight: "bold",
@@ -95,7 +166,6 @@ const styles = StyleSheet.create({
   },
   tag: {
     padding: 10,
-    // margin: 5,
     marginRight: 8,
     marginBottom: 8,
     borderWidth: 1,
