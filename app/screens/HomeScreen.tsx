@@ -70,6 +70,14 @@ export default function HomeScreen({ navigation }: any) {
 
   return (
     <SafeAreaView style={styles.container}>
+      <Text style={styles.title}>Reflect 🌱</Text>
+      <Image
+        source={{
+          uri: "https://doodleipsum.com/1000x300/flat?bg=007bff",
+        }}
+        style={styles.topImage}
+      />
+
       <InspiringQuote />
 
       {/* <View style={styles.tagContainer}>
@@ -130,16 +138,32 @@ export default function HomeScreen({ navigation }: any) {
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
           <View style={styles.entry}>
-            <Text style={styles.content}>{item.content}</Text>
-            <Text style={styles.tags}>Tags: {item.tags.join(", ")}</Text>
-            {item.imageUrl && (
-              <View style={{ marginBottom: 8 }}>
-                <Image
-                  source={{ uri: item.imageUrl }}
-                  style={{ width: 100, height: 100, borderRadius: 8 }}
-                />
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "space-between",
+                padding: 8,
+              }}
+            >
+              <View>
+                <View style={styles.tagBadgeContainer}>
+                  {item.tags.map((tag: string, index: number) => (
+                    <View key={index} style={styles.tagBadge}>
+                      <Text style={styles.tagBadgeText}>{tag}</Text>
+                    </View>
+                  ))}
+                </View>
+                <Text style={styles.content}>{item.content}</Text>
               </View>
-            )}
+              {item.imageUrl && (
+                <View>
+                  <Image
+                    source={{ uri: item.imageUrl }}
+                    style={{ width: 60, height: 60, borderRadius: 8 }}
+                  />
+                </View>
+              )}
+            </View>
             <View style={styles.buttonContainer}>
               <Button
                 title="Edit"
@@ -161,6 +185,12 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 16,
     backgroundColor: "#fff",
+  },
+  topImage: {
+    width: "100%",
+    height: 150,
+    borderRadius: 8,
+    marginBottom: 16,
   },
   title: {
     fontSize: 24,
@@ -198,7 +228,7 @@ const styles = StyleSheet.create({
   },
   entry: {
     marginBottom: 16,
-    padding: 12,
+    padding: 4,
     borderWidth: 1,
     borderColor: "#ccc",
     borderRadius: 8,
@@ -206,6 +236,7 @@ const styles = StyleSheet.create({
   content: {
     fontSize: 16,
     marginBottom: 8,
+    // fontWeight: "bold",
   },
   tags: {
     fontSize: 14,
@@ -214,6 +245,22 @@ const styles = StyleSheet.create({
   buttonContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
-    marginTop: 8,
+  },
+  tagBadgeContainer: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+  },
+  tagBadge: {
+    backgroundColor: "#f8acff",
+    borderRadius: 10,
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    marginRight: 8,
+    marginBottom: 4,
+  },
+  tagBadgeText: {
+    color: "#fff",
+    fontSize: 10,
+    // fontWeight: "bold",
   },
 });

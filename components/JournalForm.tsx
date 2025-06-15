@@ -55,7 +55,7 @@ export default function JournalForm({
 
       {imageUri && (
         <View style={styles.imagePreviewContainer}>
-          <Text style={styles.subtitle}>Selected Image:</Text>
+          {/* <Text style={styles.subtitle}>Selected Image:</Text> */}
           <Image source={{ uri: imageUri }} style={styles.imagePreview} />
         </View>
       )}
@@ -146,7 +146,7 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   imageButton: {
-    backgroundColor: "#444",
+    backgroundColor: "#f8acff",
     paddingVertical: 10,
     paddingHorizontal: 15,
     borderRadius: 8,
@@ -178,8 +178,8 @@ const styles = StyleSheet.create({
     borderColor: "#007bff",
   },
   selectedAreaTag: {
-    backgroundColor: "#007f5f",
-    borderColor: "#007f5f",
+    backgroundColor: "#f8acff",
+    borderColor: "#f8acff",
   },
   tagText: {
     color: "#000",

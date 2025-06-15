@@ -8,6 +8,7 @@ import {
   StyleSheet,
   Text,
   TouchableWithoutFeedback,
+  View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -50,7 +51,17 @@ export default function EditEntryScreen({ route, navigation }: any) {
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <SafeAreaView style={styles.container}>
-        <Text style={styles.title}>Update Journal Entry</Text>
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: "center",
+            marginBottom: 16,
+          }}
+        >
+          <Text style={styles.title}>Update Journal Entry</Text>
+          <Button title="Submit" onPress={handleSubmit} />
+        </View>
         <JournalForm
           post={post}
           setPost={setPost}
@@ -59,7 +70,6 @@ export default function EditEntryScreen({ route, navigation }: any) {
           imageUri={imageUri}
           setImageUri={setImageUri}
         />
-        <Button title="Update" onPress={handleSubmit} />
       </SafeAreaView>
     </TouchableWithoutFeedback>
   );
@@ -74,6 +84,5 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 24,
     fontWeight: "bold",
-    marginBottom: 16,
   },
 });

@@ -36,11 +36,12 @@ const styles = StyleSheet.create({
   container: {
     padding: 16,
     marginBottom: 12,
-    backgroundColor: "#f5f5f5",
+    backgroundColor: "#f8acff",
     borderRadius: 8,
   },
   quote: {
     fontStyle: "italic",
     color: "#333",
+    fontWeight: "bold",
   },
 });

@@ -38,7 +38,7 @@ export default function Index() {
 
   return (
     <AuthProvider>
-      <AppNavigator />
+      <AppNavigator navRef={navigationRef} />
     </AuthProvider>
   );
 }

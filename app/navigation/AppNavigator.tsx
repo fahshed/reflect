@@ -7,7 +7,7 @@ import BottomTabNavigator from "./BottomTabNavigator";
 
 const Stack = createStackNavigator();
 
-export default function AppNavigator() {
+export default function AppNavigator({ navRef }) {
   const { user } = useAuth();
 
   console.log("AppNavigator user:", user);
