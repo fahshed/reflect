@@ -36,6 +36,10 @@ export default function HomeScreen({ navigation }: any) {
     return () => unsubscribe();
   }, []);
 
+  useEffect(() => {
+    applyFilters();
+  }, [selectedTags]);
+
   const toggleTag = (tag: string) => {
     if (selectedTags.includes(tag)) {
       setSelectedTags(selectedTags.filter((t) => t !== tag));
@@ -91,7 +95,7 @@ export default function HomeScreen({ navigation }: any) {
         ))}
       </View> */}
 
-      <View>
+      <View style={{ marginBottom: 16 }}>
         <FlatList
           data={[...reflectionTypes, ...areasOfLife]}
           keyExtractor={(item) => item}
@@ -119,7 +123,7 @@ export default function HomeScreen({ navigation }: any) {
         />
       </View>
 
-      <Button title="Apply Filters" onPress={applyFilters} />
+      {/* <Button title="Apply Filters" onPress={applyFilters} /> */}
 
       <FlatList
         data={filteredEntries}

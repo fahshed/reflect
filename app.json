@@ -9,7 +9,10 @@
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "infoPlist": {
+        "NSUserNotificationUsageDescription": "This app uses notifications to remind you to reflect."
+      }
     },
     "android": {
       "adaptiveIcon": {
@@ -37,6 +40,19 @@
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "37b5609a-f59d-4afa-9b36-9981ab1626c8"
+      }
+    },
+    "owner": "fahshed",
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/37b5609a-f59d-4afa-9b36-9981ab1626c8"
     }
   }
 }
