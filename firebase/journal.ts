@@ -4,6 +4,7 @@ import {
   deleteDoc,
   doc,
   getDocs,
+  orderBy,
   query,
   updateDoc,
   where,
@@ -34,7 +35,11 @@ export async function createJournalEntry(
 
 export async function getJournalEntries(userId: string) {
   try {
-    const userQuery = query(journalCollection, where("userId", "==", userId));
+    const userQuery = query(
+      journalCollection,
+      where("userId", "==", userId),
+      orderBy("createdAt", "desc")
+    );
     const querySnapshot = await getDocs(userQuery);
 
     const entries = querySnapshot.docs.map((doc) => ({

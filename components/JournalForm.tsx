@@ -1,14 +1,12 @@
+import { areasOfLife, reflectionTypes } from "@/utils/tags";
 import React from "react";
 import {
-  FlatList,
   StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
   View,
 } from "react-native";
-
-const presetTags = ["Work", "Personal", "Fitness", "Health", "Hobby", "Travel"];
 
 export default function JournalForm({
   post,
@@ -25,16 +23,14 @@ export default function JournalForm({
         onChangeText={setPost}
         multiline
       />
-      <Text style={styles.subtitle}>Select Tags:</Text>
-      <FlatList
-        data={presetTags}
-        keyExtractor={(item) => item}
-        numColumns={3}
-        renderItem={({ item }) => (
+
+      <View style={styles.tagContainer}>
+        {reflectionTypes.map((item) => (
           <TouchableOpacity
+            key={item}
             style={[
               styles.tag,
-              selectedTags.includes(item) && styles.selectedTag,
+              selectedTags.includes(item) && styles.selectedTypeTag,
             ]}
             onPress={() => toggleTag(item)}
           >
@@ -48,8 +44,31 @@ export default function JournalForm({
               {item}
             </Text>
           </TouchableOpacity>
-        )}
-      />
+        ))}
+      </View>
+      <View style={styles.divider} />
+      <View style={styles.tagContainer}>
+        {areasOfLife.map((item) => (
+          <TouchableOpacity
+            key={item}
+            style={[
+              styles.tag,
+              selectedTags.includes(item) && styles.selectedAreaTag,
+            ]}
+            onPress={() => toggleTag(item)}
+          >
+            <Text
+              style={
+                selectedTags.includes(item)
+                  ? styles.selectedTagText
+                  : styles.tagText
+              }
+            >
+              {item}
+            </Text>
+          </TouchableOpacity>
+        ))}
+      </View>
     </View>
   );
 }
@@ -70,22 +89,37 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     marginBottom: 8,
   },
+  tagContainer: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+  },
   tag: {
     padding: 10,
-    margin: 5,
+    // margin: 5,
+    marginRight: 8,
+    marginBottom: 8,
     borderWidth: 1,
     borderColor: "#ccc",
     borderRadius: 20,
     backgroundColor: "#f0f0f0",
   },
-  selectedTag: {
+  selectedTypeTag: {
     backgroundColor: "#007bff",
     borderColor: "#007bff",
+  },
+  selectedAreaTag: {
+    backgroundColor: "#007f5f",
+    borderColor: "#007f5f",
   },
   tagText: {
     color: "#000",
   },
   selectedTagText: {
     color: "#fff",
+  },
+  divider: {
+    height: 1,
+    backgroundColor: "#ccc",
+    marginBottom: 8,
   },
 });
